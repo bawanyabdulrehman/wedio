@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 350 20% 99%;
     --popover-foreground: 340 15% 12%;
 
-    --primary: 25 95% 53%;
+    --primary: 330 85% 65%;
     --primary-foreground: 350 15% 98%;
 
     --secondary: 340 8% 95%;
@@ -34,15 +34,15 @@ All colors MUST be HSL.
 
     --border: 340 8% 90%;
     --input: 340 8% 95%;
-    --ring: 25 95% 53%;
+    --ring: 330 85% 65%;
 
-    /* Wedding-specific design tokens */
-    --rose-gold: 25 95% 53%;
-    --rose-gold-light: 25 85% 85%;
-    --rose-gold-dark: 25 85% 35%;
-    --blush: 350 60% 92%;
-    --champagne: 45 25% 88%;
-    --pearl: 40 8% 96%;
+    /* Wedding-specific design tokens - Pink Aesthetic */
+    --rose-gold: 330 85% 65%;
+    --rose-gold-light: 320 75% 85%;
+    --rose-gold-dark: 340 70% 45%;
+    --blush: 320 60% 92%;
+    --champagne: 350 25% 88%;
+    --pearl: 320 8% 96%;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--rose-gold)), hsl(var(--rose-gold-light)));
@@ -87,7 +87,7 @@ All colors MUST be HSL.
     --popover: 340 15% 10%;
     --popover-foreground: 350 15% 95%;
 
-    --primary: 25 95% 53%;
+    --primary: 330 85% 65%;
     --primary-foreground: 340 15% 8%;
 
     --secondary: 340 8% 15%;
@@ -104,24 +104,24 @@ All colors MUST be HSL.
 
     --border: 340 8% 20%;
     --input: 340 8% 15%;
-    --ring: 25 95% 53%;
+    --ring: 330 85% 65%;
 
-    /* Wedding-specific dark mode tokens */
-    --rose-gold: 25 95% 53%;
-    --rose-gold-light: 25 85% 75%;
-    --rose-gold-dark: 25 85% 25%;
+    /* Wedding-specific dark mode tokens - Pink Aesthetic */
+    --rose-gold: 330 85% 65%;
+    --rose-gold-light: 320 75% 75%;
+    --rose-gold-dark: 340 70% 35%;
     --blush: 350 30% 15%;
     --champagne: 45 15% 20%;
     --pearl: 40 8% 12%;
     
     --sidebar-background: 340 15% 8%;
     --sidebar-foreground: 350 15% 95%;
-    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary: 330 85% 65%;
     --sidebar-primary-foreground: 340 15% 8%;
     --sidebar-accent: 340 8% 15%;
     --sidebar-accent-foreground: 350 15% 95%;
     --sidebar-border: 340 8% 20%;
-    --sidebar-ring: 25 95% 53%;
+    --sidebar-ring: 330 85% 65%;
   }
 }
 
