@@ -26,7 +26,7 @@ const Footer = () => {
   ];
 
   const downloadApp = [
-    { name: "Shadiyana Planner App", href: "#" },
+    { name: "Aasaan Shaadi Planner App", href: "#" },
   ];
 
   return (

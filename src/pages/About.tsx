@@ -49,26 +49,26 @@ const About = () => {
 
   const team = [
     {
-      name: "Sarah Ahmed",
-      role: "Founder & CEO",
+      name: "Muzammil Ahmed",
+      role: "Co-founder & CEO",
       description: "Visionary leader with 10+ years in event management",
-      image: "👩‍💼"
+      image: "👨‍💼"
     },
     {
-      name: "Ali Hassan",
-      role: "Head of Operations",
+      name: "Hamza Ahmed",
+      role: "Co-founder & Head of Operations",
       description: "Logistics expert ensuring seamless wedding experiences",
       image: "👨‍💼"
     },
     {
-      name: "Fatima Khan",
-      role: "Creative Director",
-      description: "Design maestro bringing wedding dreams to life",
-      image: "👩‍🎨"
+      name: "Abdul Reham",
+      role: "Head of Finance",
+      description: "Financial expert managing budgets and cost optimization",
+      image: "👨‍💼"
     },
     {
-      name: "Ahmed Malik",
-      role: "Technology Lead",
+      name: "Abdul Rafay",
+      role: "Head of Tech Lead",
       description: "Tech innovator building digital wedding solutions",
       image: "👨‍💻"
     }
