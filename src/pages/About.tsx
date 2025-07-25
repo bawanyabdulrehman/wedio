@@ -61,13 +61,13 @@ const About = () => {
       image: "👨‍💼"
     },
     {
-      name: "Abdul Reham",
+      name: "Abdul Rehman",
       role: "Head of Finance",
       description: "Financial expert managing budgets and cost optimization",
       image: "👨‍💼"
     },
     {
-      name: "Abdul Rafay",
+      name: "Abdur Rafay",
       role: "Head of Tech Lead",
       description: "Tech innovator building digital wedding solutions",
       image: "👨‍💻"
