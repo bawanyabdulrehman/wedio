@@ -71,7 +71,7 @@ const AIChatWidget = () => {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Thank you for your message! Our team will get back to you soon. For immediate assistance, please call us at +92-XXX-XXXXXXX.',
+        text: 'Thank you for your message! Our team will get back to you soon. For immediate assistance, please call us at +92-332-2726688.',
         sender: 'bot',
         timestamp: new Date()
       };
