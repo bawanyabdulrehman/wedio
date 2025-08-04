@@ -48,6 +48,33 @@ const Home = () => {
     }
   ];
 
+  const miniEvents = [
+    {
+      id: 1,
+      title: "Birthday Parties",
+      description: "Celebrate your special day with style! From intimate gatherings to grand celebrations, we make every birthday memorable.",
+      icon: "🎂",
+      features: ["Theme decoration", "Catering services", "Entertainment options", "Photography packages"],
+      price: "Starting from Rs. 15,000"
+    },
+    {
+      id: 2,
+      title: "Bridal Showers",
+      description: "Make the bride-to-be feel special with our curated bridal shower packages. Intimate, elegant, and unforgettable.",
+      icon: "💍",
+      features: ["Intimate venue setup", "Gourmet catering", "Decoration & styling", "Photography included"],
+      price: "Starting from Rs. 25,000"
+    },
+    {
+      id: 3,
+      title: "Mini Get-Togethers",
+      description: "Perfect for family reunions, friend meetups, or any small celebration. Cozy, comfortable, and hassle-free.",
+      icon: "🎉",
+      features: ["Cozy venue options", "Flexible catering", "Basic decoration", "Easy booking"],
+      price: "Starting from Rs. 10,000"
+    }
+  ];
+
   const featuredVenues = [
     {
       id: 1,
@@ -60,9 +87,9 @@ const Home = () => {
     },
     {
       id: 2,
-      name: "Seaside Palace",
-      location: "DHA Phase 8, Karachi",
-      image: venue2,
+      name: "Continental Banquet",
+      location: "Gulistan-e-Johar, Karachi",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWGlxpdUEJNpIQZcadVp_6ZA38cYCxHgKtqg&s",
       rating: 4.9,
       price: "Rs. 3,50,000",
       capacity: "300-500 guests"
@@ -189,6 +216,60 @@ const Home = () => {
                     onClick={handleBookNow}
                   >
                     Get Started
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mini Events Section */}
+      <section className="py-20 bg-pearl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+              Mini Events & Celebrations
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Not just weddings! We make every celebration special with our mini event packages
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {miniEvents.map((event) => (
+              <Card key={event.id} className="bg-card/50 backdrop-blur-sm border-rose-gold/20 hover:border-rose-gold/40 transition-all duration-300 hover:shadow-xl group">
+                <CardHeader className="text-center pb-4">
+                  <div className="mx-auto mb-4 p-4 bg-gradient-to-r from-rose-gold to-rose-gold-light rounded-full group-hover:scale-110 transition-transform duration-300 w-16 h-16 flex items-center justify-center">
+                    <span className="text-2xl">{event.icon}</span>
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-foreground group-hover:text-rose-gold transition-colors">
+                    {event.title}
+                  </CardTitle>
+                  <CardDescription className="text-muted-foreground text-base">
+                    {event.description}
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="bg-rose-gold text-white text-sm">
+                      {event.price}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 mb-6">
+                    {event.features.map((feature, index) => (
+                      <li key={index} className="flex items-center space-x-3">
+                        <CheckCircle className="h-5 w-5 text-rose-gold flex-shrink-0" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button 
+                    variant="elegant" 
+                    className="w-full"
+                    onClick={handleBookNow}
+                  >
+                    Book Mini Event
                   </Button>
                 </CardContent>
               </Card>
