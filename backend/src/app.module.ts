@@ -7,18 +7,15 @@ import {PrismaModule} from './prisma/prisma.module'
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
-})
-@Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    UsersModule, 
+    AuthModule,
+    PrismaModule
   ],
-})
-@Module({
-  imports: [PrismaModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

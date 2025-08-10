@@ -8,16 +8,16 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // Remove trailing slash from CORS_ORIGIN
-  const corsOrigin = process.env.CORS_ORIGIN?.replace(/\/$/, '');
-
+  // For development, allow all origins
   app.enableCors({
-    origin: [corsOrigin, 'https://aasaan-shaadi.vercel.app'],
+    origin: true, // Allow all origins in development
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   });
 
   await app.listen(process.env.PORT || 3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();

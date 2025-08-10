@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "60c88dc6-7e08-44a1-bab6-e89aceabf3ea",
+		"name": "Asan-Shadi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47338816",
+		"_collection_link": "https://web.postman.co/workspace/Asan-Shadi-Devs-Workspace~070cb809-1581-45a7-8287-043ae5a8c024/collection/31847342-60c88dc6-7e08-44a1-bab6-e89aceabf3ea?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Get All Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NmRjYTYzYy05YWY2LTQwODktYThjMy1jMjc2ZGFhZjY5MmUiLCJlbWFpbCI6IlRvbUBleGFtcGxlLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc1NDc0Mjc3MywiZXhwIjoxNzU1MzQ3NTczfQ.GL-Y8xdc4G3CvFiLbuqwYmXA--oSW4z2E9NdJuCdm2Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "farooq",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "farooq@ei1tech.com",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Specific User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/users/3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create A User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Ayan",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "ayan@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"tony@example.com\",\r\n  \"password\": \"secretwars1234\",\r\n  \"name\": \"Tony Stark\",\r\n  \"phone\": \"1234567890\",\r\n  \"role\": \"CUSTOMER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/signup",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"tony@example.com\",\r\n  \"password\": \"secretwars1234\"\r\n}                               ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/signin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticated User Info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMDg0MDUwMy1jNWUxLTQ2YTktYTI2Zi00ZDgxY2MxMTk1MzkiLCJlbWFpbCI6InRvbnlAZXhhbXBsZS5jb20iLCJyb2xlIjoiQ1VTVE9NRVIiLCJpYXQiOjE3NTQyNTYyMzMsImV4cCI6MTc1NDI1NjI5M30.FSgbIAgBoewTZJaqA7BAijs8JQTlNptgpItu5kXDd-s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/me",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh-token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"d0840503-c5e1-46a9-a26f-4d81cc119539\",  \r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMDg0MDUwMy1jNWUxLTQ2YTktYTI2Zi00ZDgxY2MxMTk1MzkiLCJlbWFpbCI6InRvbnlAZXhhbXBsZS5jb20iLCJyb2xlIjoiQ1VTVE9NRVIiLCJpYXQiOjE3NTQ3MzU5NTgsImV4cCI6MTc1NTM0MDc1OH0.VQ_SJFmVtAf-lPEfTikN3-rSxbH3zxj2dEgJX-R8AuQ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"d0840503-c5e1-46a9-a26f-4d81cc119539\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/logout",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3000",
+			"type": "default"
+		}
+	]
+}

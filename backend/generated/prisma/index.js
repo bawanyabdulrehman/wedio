@@ -137,7 +137,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\WAJAHAT TRADERS\\Downloads\\dotone\\shadi-backend\\generated\\prisma",
+      "value": "C:\\Users\\WAJAHAT TRADERS\\Downloads\\wedio\\backend\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -151,12 +151,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\WAJAHAT TRADERS\\Downloads\\dotone\\shadi-backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\WAJAHAT TRADERS\\Downloads\\wedio\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.13.0",
