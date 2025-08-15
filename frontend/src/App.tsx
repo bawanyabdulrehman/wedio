@@ -9,6 +9,10 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Vendors from "./pages/Vendors";
 import Login from "./pages/Login";
+import VendorLogin from "./pages/VendorLogin";
+import VendorSignup from "./pages/VendorSignup";
+import VendorDashboard from "./pages/VendorDashboard";
+import AddService from "./pages/AddService";
 import NotFound from "./pages/NotFound";
 import AIChatWidget from "./components/AIChatWidget";
 
@@ -27,6 +31,10 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/vendor-login" element={<VendorLogin />} />
+          <Route path="/vendor-signup" element={<VendorSignup />} />
+          <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+          <Route path="/vendor/add-service" element={<AddService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

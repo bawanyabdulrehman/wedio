@@ -52,6 +52,13 @@ const Header = () => {
             <Button variant="elegant" onClick={handleLoginClick}>
               Login
             </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/vendor-login")}
+              className="border-rose-gold/30 hover:border-rose-gold"
+            >
+              Vendor Login
+            </Button>
             <Button variant="hero">
               Book Now
             </Button>
@@ -87,6 +94,13 @@ const Header = () => {
               <div className="flex flex-col space-y-2 pt-4">
                 <Button variant="elegant" onClick={handleLoginClick} className="w-full">
                   Login
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate("/vendor-login")}
+                  className="w-full border-rose-gold/30 hover:border-rose-gold"
+                >
+                  Vendor Login
                 </Button>
                 <Button variant="hero" className="w-full">
                   Book Now
