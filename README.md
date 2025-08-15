@@ -31,7 +31,7 @@ wedio/
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/bawanyabdulrehman/wedio.git
    cd wedio
    ```
 
@@ -219,3 +219,5 @@ npm run test:cov
 - Use meaningful commit messages
 - Add comments for complex logic
 - Ensure all tests pass before submitting 
+
+THANK YOU FOR YOUR ATTENTION TO THIS MATTER
