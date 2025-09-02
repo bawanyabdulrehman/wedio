@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useNavigate, Link } from "react-router-dom";
 import { 
@@ -17,7 +18,13 @@ import {
   Eye,
   EyeOff,
   ArrowLeft,
-  Check
+  Check,
+  Upload,
+  X,
+  Image as ImageIcon,
+  FileText,
+  Plus,
+  DollarSign
 } from "lucide-react";
 
 const VendorSignup = () => {
@@ -39,7 +46,19 @@ const VendorSignup = () => {
     password: "",
     confirmPassword: "",
     serviceCategories: [] as string[],
-    termsAccepted: false
+    serviceDetails: {
+      serviceName: "",
+      description: "",
+      pricing: "",
+      maxPrice: "",
+      highlights: [] as string[]
+    },
+    portfolio: {
+      images: [] as File[],
+      previewUrls: [] as string[]
+    },
+    termsAccepted: false,
+    cnicDocument: null as File | null
   });
 
   const serviceCategories = [
@@ -67,19 +86,96 @@ const VendorSignup = () => {
     }));
   };
 
+  const handleServiceDetailsChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      serviceDetails: {
+        ...prev.serviceDetails,
+        [field]: value
+      }
+    }));
+  };
+
+  const handleHighlightAdd = () => {
+    const input = document.getElementById('highlight-input') as HTMLInputElement;
+    if (input?.value.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        serviceDetails: {
+          ...prev.serviceDetails,
+          highlights: [...prev.serviceDetails.highlights, input.value.trim()]
+        }
+      }));
+      input.value = '';
+    }
+  };
+
+  const handleHighlightRemove = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      serviceDetails: {
+        ...prev.serviceDetails,
+        highlights: prev.serviceDetails.highlights.filter((_, i) => i !== index)
+      }
+    }));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const newImages = files.filter(file => file.type.startsWith('image/'));
+    
+    if (newImages.length + formData.portfolio.images.length > 10) {
+      toast.error('You can upload maximum 10 images');
+      return;
+    }
+
+    const newPreviewUrls = newImages.map(file => URL.createObjectURL(file));
+    
+    setFormData(prev => ({
+      ...prev,
+      portfolio: {
+        images: [...prev.portfolio.images, ...newImages],
+        previewUrls: [...prev.portfolio.previewUrls, ...newPreviewUrls]
+      }
+    }));
+  };
+
+  const handleImageRemove = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      portfolio: {
+        images: prev.portfolio.images.filter((_, i) => i !== index),
+        previewUrls: prev.portfolio.previewUrls.filter((_, i) => i !== index)
+      }
+    }));
+  };
+
+  const handleCnicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, cnicDocument: file }));
+    }
+  };
+
   const handleNextStep = () => {
     if (step === 1) {
-      if (!formData.businessName || !formData.businessType || !formData.ownerName || !formData.cnic || !formData.email || !formData.phone || !formData.address || !formData.city) {
-        toast.error("Please fill in all required fields");
-        return;
-      }
-      setStep(2);
-    } else if (step === 2) {
       if (formData.serviceCategories.length === 0) {
         toast.error("Please select at least one service category");
         return;
       }
+      setStep(2);
+    } else if (step === 2) {
+      if (!formData.serviceDetails.serviceName || !formData.serviceDetails.description || !formData.serviceDetails.pricing) {
+        toast.error("Please fill in all service details");
+        return;
+      }
       setStep(3);
+    } else if (step === 3) {
+      if (formData.portfolio.images.length === 0) {
+        toast.error("Please upload at least one portfolio image");
+        return;
+      }
+      setStep(4);
     }
   };
 
@@ -114,131 +210,8 @@ const VendorSignup = () => {
     }, 1000);
   };
 
+  // Step 1: Choose Category
   const renderStep1 = () => (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="businessName" className="text-foreground">Business Name *</Label>
-          <Input
-            id="businessName"
-            name="businessName"
-            placeholder="Enter your business name"
-            value={formData.businessName}
-            onChange={handleInputChange}
-            className="border-rose-gold/30 focus:border-rose-gold"
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="businessType" className="text-foreground">Business Type *</Label>
-          <Input
-            id="businessType"
-            name="businessType"
-            placeholder="e.g., Venue, Catering, Photography"
-            value={formData.businessType}
-            onChange={handleInputChange}
-            className="border-rose-gold/30 focus:border-rose-gold"
-            required
-          />
-        </div>
-      </div>
-
-             <div className="space-y-2">
-         <Label htmlFor="ownerName" className="text-foreground">Owner/Manager Name *</Label>
-         <div className="relative">
-           <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-           <Input
-             id="ownerName"
-             name="ownerName"
-             placeholder="Enter owner/manager name"
-             value={formData.ownerName}
-             onChange={handleInputChange}
-             className="pl-10 border-rose-gold/30 focus:border-rose-gold"
-             required
-           />
-         </div>
-       </div>
-
-       <div className="space-y-2">
-         <Label htmlFor="cnic" className="text-foreground">CNIC Number *</Label>
-         <Input
-           id="cnic"
-           name="cnic"
-           placeholder="00000-0000000-0"
-           value={formData.cnic}
-           onChange={handleInputChange}
-           className="border-rose-gold/30 focus:border-rose-gold"
-           required
-         />
-       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-foreground">Business Email *</Label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter business email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="pl-10 border-rose-gold/30 focus:border-rose-gold"
-              required
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone" className="text-foreground">Phone Number *</Label>
-          <div className="relative">
-            <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              placeholder="Enter phone number"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="pl-10 border-rose-gold/30 focus:border-rose-gold"
-              required
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="address" className="text-foreground">Business Address *</Label>
-        <div className="relative">
-          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="address"
-            name="address"
-            placeholder="Enter business address"
-            value={formData.address}
-            onChange={handleInputChange}
-            className="pl-10 border-rose-gold/30 focus:border-rose-gold"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="city" className="text-foreground">City *</Label>
-        <Input
-          id="city"
-          name="city"
-          placeholder="Enter city"
-          value={formData.city}
-          onChange={handleInputChange}
-          className="border-rose-gold/30 focus:border-rose-gold"
-          required
-        />
-      </div>
-    </div>
-  );
-
-  const renderStep2 = () => (
     <div className="space-y-6">
       <div className="text-center mb-6">
         <h3 className="text-lg font-semibold text-foreground mb-2">Select Your Service Categories</h3>
@@ -280,73 +253,346 @@ const VendorSignup = () => {
     </div>
   );
 
+  // Step 2: Service Details
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-lg font-semibold text-foreground mb-2">Enter Service Details</h3>
+        <p className="text-muted-foreground">Tell us about your services and pricing</p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="serviceName" className="text-foreground">Service Name *</Label>
+          <Input
+            id="serviceName"
+            placeholder="e.g., Premium Wedding Photography"
+            value={formData.serviceDetails.serviceName}
+            onChange={(e) => handleServiceDetailsChange('serviceName', e.target.value)}
+            className="border-rose-gold/30 focus:border-rose-gold"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="description" className="text-foreground">Service Description *</Label>
+          <Textarea
+            id="description"
+            placeholder="Describe your services in detail..."
+            value={formData.serviceDetails.description}
+            onChange={(e) => handleServiceDetailsChange('description', e.target.value)}
+            className="border-rose-gold/30 focus:border-rose-gold min-h-[100px]"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="pricing" className="text-foreground">Starting Price (PKR) *</Label>
+            <div className="relative">
+              <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="pricing"
+                placeholder="25,000"
+                value={formData.serviceDetails.pricing}
+                onChange={(e) => handleServiceDetailsChange('pricing', e.target.value)}
+                className="pl-10 border-rose-gold/30 focus:border-rose-gold"
+                required
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="maxPrice" className="text-foreground">Maximum Price (PKR)</Label>
+            <div className="relative">
+              <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="maxPrice"
+                placeholder="100,000"
+                value={formData.serviceDetails.maxPrice}
+                onChange={(e) => handleServiceDetailsChange('maxPrice', e.target.value)}
+                className="pl-10 border-rose-gold/30 focus:border-rose-gold"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <Label className="text-foreground">Service Highlights</Label>
+          <div className="flex space-x-2">
+            <Input
+              id="highlight-input"
+              placeholder="Add a service highlight..."
+              className="border-rose-gold/30 focus:border-rose-gold"
+            />
+            <Button type="button" variant="outline" onClick={handleHighlightAdd}>
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          {formData.serviceDetails.highlights.length > 0 && (
+            <div className="space-y-2">
+              {formData.serviceDetails.highlights.map((highlight, index) => (
+                <div key={index} className="flex items-center justify-between p-2 bg-rose-gold/5 rounded-lg">
+                  <span className="text-sm">{highlight}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleHighlightRemove(index)}
+                    className="h-6 w-6 p-0 hover:bg-rose-gold/20"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Step 3: Upload Portfolio
   const renderStep3 = () => (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="password" className="text-foreground">Create Password *</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="password"
-            name="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Create a strong password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="pl-10 pr-10 border-rose-gold/30 focus:border-rose-gold"
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 text-muted-foreground hover:text-rose-gold"
-          >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </button>
-        </div>
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-lg font-semibold text-foreground mb-2">Upload Portfolio Images</h3>
+        <p className="text-muted-foreground">Showcase your work with high-quality images (Max 10 images)</p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password *</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            className="pl-10 pr-10 border-rose-gold/30 focus:border-rose-gold"
-            required
+      <div className="space-y-4">
+        <div className="border-2 border-dashed border-rose-gold/30 rounded-lg p-8 text-center hover:border-rose-gold/60 transition-colors">
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+            id="portfolio-upload"
           />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-3 text-muted-foreground hover:text-rose-gold"
-          >
-            {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </button>
+          <label htmlFor="portfolio-upload" className="cursor-pointer">
+            <ImageIcon className="h-12 w-12 text-rose-gold mx-auto mb-4" />
+            <p className="text-foreground font-semibold mb-2">Click to upload images</p>
+            <p className="text-sm text-muted-foreground">
+              Supported formats: JPG, PNG, GIF (Max 5MB each)
+            </p>
+          </label>
+        </div>
+
+        {formData.portfolio.previewUrls.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {formData.portfolio.previewUrls.map((url, index) => (
+              <div key={index} className="relative group">
+                <img
+                  src={url}
+                  alt={`Portfolio ${index + 1}`}
+                  className="w-full h-32 object-cover rounded-lg border border-rose-gold/20"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleImageRemove(index)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="space-y-2">
+          <Label htmlFor="cnicUpload" className="text-foreground">Upload CNIC Document (For Verification)</Label>
+          <div className="border-2 border-dashed border-rose-gold/30 rounded-lg p-4 text-center hover:border-rose-gold/60 transition-colors">
+            <input
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              onChange={handleCnicUpload}
+              className="hidden"
+              id="cnic-upload"
+            />
+            <label htmlFor="cnic-upload" className="cursor-pointer">
+              <FileText className="h-8 w-8 text-rose-gold mx-auto mb-2" />
+              <p className="text-sm text-foreground">
+                {formData.cnicDocument ? formData.cnicDocument.name : "Click to upload CNIC document"}
+              </p>
+            </label>
+          </div>
         </div>
       </div>
+    </div>
+  );
 
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id="terms"
-          checked={formData.termsAccepted}
-          onCheckedChange={(checked) => setFormData(prev => ({ ...prev, termsAccepted: checked as boolean }))}
-          className="border-rose-gold/30 data-[state=checked]:bg-rose-gold data-[state=checked]:border-rose-gold"
-        />
-        <label htmlFor="terms" className="text-sm text-muted-foreground">
-          I agree to the{" "}
-          <button type="button" className="text-rose-gold hover:underline">
-            Terms of Service
-          </button>{" "}
-          and{" "}
-          <button type="button" className="text-rose-gold hover:underline">
-            Privacy Policy
-          </button>
-        </label>
+  // Step 4: Preview & Submit
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-lg font-semibold text-foreground mb-2">Preview & Submit</h3>
+        <p className="text-muted-foreground">Review your information before submitting</p>
+      </div>
+
+      <div className="space-y-6">
+        {/* Business Info */}
+        <Card className="border-rose-gold/20">
+          <CardHeader>
+            <CardTitle className="text-lg">Business Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Business Name *</Label>
+                <Input
+                  value={formData.businessName}
+                  onChange={handleInputChange}
+                  name="businessName"
+                  placeholder="Enter business name"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Owner/Manager Name *</Label>
+                <Input
+                  value={formData.ownerName}
+                  onChange={handleInputChange}
+                  name="ownerName"
+                  placeholder="Enter owner name"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>CNIC Number *</Label>
+                <Input
+                  value={formData.cnic}
+                  onChange={handleInputChange}
+                  name="cnic"
+                  placeholder="00000-0000000-0"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Email *</Label>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  name="email"
+                  placeholder="Enter email"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Phone *</Label>
+                <Input
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  name="phone"
+                  placeholder="Enter phone"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>City *</Label>
+                <Input
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  name="city"
+                  placeholder="Enter city"
+                  className="border-rose-gold/30 focus:border-rose-gold"
+                  required
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Address *</Label>
+              <Input
+                value={formData.address}
+                onChange={handleInputChange}
+                name="address"
+                placeholder="Enter address"
+                className="border-rose-gold/30 focus:border-rose-gold"
+                required
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Account Setup */}
+        <Card className="border-rose-gold/20">
+          <CardHeader>
+            <CardTitle className="text-lg">Account Setup</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Password *</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    name="password"
+                    placeholder="Create password"
+                    className="pl-10 pr-10 border-rose-gold/30 focus:border-rose-gold"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-muted-foreground hover:text-rose-gold"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Confirm Password *</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    className="pl-10 pr-10 border-rose-gold/30 focus:border-rose-gold"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-3 text-muted-foreground hover:text-rose-gold"
+                  >
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Terms and Conditions */}
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="terms"
+            checked={formData.termsAccepted}
+            onCheckedChange={(checked) => setFormData(prev => ({ ...prev, termsAccepted: checked as boolean }))}
+            className="border-rose-gold/30 data-[state=checked]:bg-rose-gold data-[state=checked]:border-rose-gold"
+          />
+          <label htmlFor="terms" className="text-sm text-muted-foreground">
+            I agree to the{" "}
+            <button type="button" className="text-rose-gold hover:underline">
+              Terms of Service
+            </button>{" "}
+            and{" "}
+            <button type="button" className="text-rose-gold hover:underline">
+              Privacy Policy
+            </button>
+          </label>
+        </div>
       </div>
     </div>
   );
@@ -393,15 +639,15 @@ const VendorSignup = () => {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-foreground">Step {step} of 3</span>
+            <span className="text-sm font-medium text-foreground">Step {step} of 4</span>
             <span className="text-sm text-muted-foreground">
-              {step === 1 ? "Business Information" : step === 2 ? "Service Categories" : "Account Setup"}
+              {step === 1 ? "Choose Category" : step === 2 ? "Service Details" : step === 3 ? "Upload Portfolio" : "Preview & Submit"}
             </span>
           </div>
           <div className="w-full bg-rose-gold/20 rounded-full h-2">
             <div 
               className="bg-rose-gold h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(step / 3) * 100}%` }}
+              style={{ width: `${(step / 4) * 100}%` }}
             ></div>
           </div>
         </div>
@@ -410,14 +656,16 @@ const VendorSignup = () => {
         <Card className="border-rose-gold/20 shadow-2xl backdrop-blur-sm bg-white/95">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-foreground">
-              {step === 1 ? "Business Information" : step === 2 ? "Service Categories" : "Create Account"}
+              {step === 1 ? "Choose Categories" : step === 2 ? "Service Details" : step === 3 ? "Upload Portfolio" : "Preview & Submit"}
             </CardTitle>
             <CardDescription>
               {step === 1 
-                ? "Tell us about your business" 
+                ? "Select the services you want to offer" 
                 : step === 2 
-                ? "Select the services you offer" 
-                : "Set up your account credentials"
+                ? "Enter your service information and pricing" 
+                : step === 3
+                ? "Upload your portfolio and documents"
+                : "Review your information and create account"
               }
             </CardDescription>
           </CardHeader>
@@ -426,6 +674,7 @@ const VendorSignup = () => {
               {step === 1 && renderStep1()}
               {step === 2 && renderStep2()}
               {step === 3 && renderStep3()}
+              {step === 4 && renderStep4()}
 
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-4">
@@ -440,7 +689,7 @@ const VendorSignup = () => {
                   </Button>
                 )}
                 
-                {step < 3 ? (
+                {step < 4 ? (
                   <Button 
                     type="button" 
                     variant="hero" 

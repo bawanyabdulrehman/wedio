@@ -3,7 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
+import VendorProfile from "@/components/VendorProfile";
+import VendorAvailabilityCalendar from "@/components/VendorAvailabilityCalendar";
 import { 
   Building2,
   MapPin, 
@@ -22,22 +28,60 @@ import {
   TrendingUp,
   Calendar,
   DollarSign,
-  LogOut
+  LogOut,
+  Settings,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Award,
+  MessageSquare
 } from "lucide-react";
 
 const VendorDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
-
-  // Mock vendor data
-  const vendorData = {
+  const [profileData, setProfileData] = useState({
     businessName: "Royal Gardens Banquet",
-    businessType: "Venue & Catering",
+    businessType: "Venue & Catering", 
     location: "Clifton, Karachi",
+    description: "Premium wedding venue with exquisite catering services, offering elegant spaces for unforgettable celebrations.",
+    phone: "+92 21 1234567",
+    email: "info@royalgardens.com",
+    website: "www.royalgardens.com",
+    rating: 4.8,
+    reviewCount: 89,
+    responseTime: "Within 2 hours",
+    availability: "Available",
+    highlights: [
+      "Starting from PKR 2,50,000",
+      "Catering up to 500 guests", 
+      "Air Conditioned Halls",
+      "Free Parking Available",
+      "Professional Photography Allowed"
+    ],
+    verificationStatus: 'verified' as 'pending' | 'verified' | 'rejected' | 'not_submitted',
+    cnicVerified: true,
+    experienceYears: "8+ Years",
+    totalBookings: 156
+  });
+
+  // Mock vendor data with enhanced information
+  const vendorData = {
+    ...profileData,
     rating: 4.8,
     totalBookings: 156,
-    monthlyRevenue: "Rs. 8,50,000",
-    activeListings: 8
+    monthlyRevenue: "Rs. 8,50,000", 
+    activeListings: 8,
+    reviewCount: 89,
+    responseTime: "Within 2 hours",
+    availability: "Available",
+    highlights: [
+      "Starting from PKR 2,50,000",
+      "Catering up to 500 guests",
+      "Air Conditioned Halls", 
+      "Free Parking Available",
+      "Professional Photography Allowed"
+    ]
   };
 
   const serviceCategories = [
@@ -240,12 +284,18 @@ const VendorDashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-rose-gold/10">
+          <TabsList className="grid w-full grid-cols-6 bg-rose-gold/10">
             <TabsTrigger value="overview" className="data-[state=active]:bg-rose-gold data-[state=active]:text-white">
               Overview
             </TabsTrigger>
+            <TabsTrigger value="profile" className="data-[state=active]:bg-rose-gold data-[state=active]:text-white">
+              Profile
+            </TabsTrigger>
             <TabsTrigger value="services" className="data-[state=active]:bg-rose-gold data-[state=active]:text-white">
               My Services
+            </TabsTrigger>
+            <TabsTrigger value="availability" className="data-[state=active]:bg-rose-gold data-[state=active]:text-white">
+              Availability
             </TabsTrigger>
             <TabsTrigger value="bookings" className="data-[state=active]:bg-rose-gold data-[state=active]:text-white">
               Bookings
@@ -257,6 +307,199 @@ const VendorDashboard = () => {
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            {/* Profile & Highlights Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              {/* Vendor Profile Card */}
+              <Card className="border-rose-gold/20">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-gradient-to-r from-rose-gold to-rose-gold-light p-3 rounded-full">
+                        <Building2 className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-lg">{vendorData.businessName}</CardTitle>
+                        <CardDescription>{vendorData.businessType}</CardDescription>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setActiveTab('profile')}
+                    >
+                      <Edit className="h-4 w-4" />
+                      View Full Profile
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      <span>{vendorData.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm">
+                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                      <span className="font-semibold">{vendorData.rating}</span>
+                      <span className="text-muted-foreground">({vendorData.reviewCount} reviews)</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm">
+                      <Clock className="h-4 w-4 text-green-500" />
+                      <span className="text-muted-foreground">Response: {vendorData.responseTime}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span className="text-green-600 font-medium">{vendorData.availability}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Service Highlights */}
+              <Card className="border-rose-gold/20 lg:col-span-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Award className="h-5 w-5 text-rose-gold" />
+                    <span>Service Highlights</span>
+                  </CardTitle>
+                  <CardDescription>Key features that make you stand out</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {vendorData.highlights.map((highlight, index) => (
+                      <div key={index} className="flex items-center space-x-2 p-2 bg-rose-gold/5 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-rose-gold flex-shrink-0" />
+                        <span className="text-sm font-medium text-foreground">{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" size="sm" className="mt-4 border-rose-gold/30 hover:border-rose-gold">
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Highlights
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Recent Reviews Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              <Card className="border-rose-gold/20 lg:col-span-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <MessageSquare className="h-5 w-5 text-rose-gold" />
+                    <span>Recent Reviews</span>
+                  </CardTitle>
+                  <CardDescription>What your clients are saying</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+            {[
+              {
+                id: "1",
+                customerName: "Fatima A.",
+                rating: 5,
+                comment: "Absolutely perfect venue and catering! The team was professional and the food was amazing.",
+                date: "2 days ago",
+                eventType: "Wedding",
+                verified: true,
+                helpful: 12,
+                vendorResponse: "Thank you so much for your kind words! It was our pleasure to be part of your special day.",
+                responseDate: "1 day ago"
+              },
+              {
+                id: "2",
+                customerName: "Ahmed K.",
+                rating: 5,
+                comment: "Royal Gardens made our wedding day magical. Highly recommended!",
+                date: "1 week ago",
+                eventType: "Reception",
+                verified: true,
+                helpful: 8
+              },
+              {
+                id: "3",
+                customerName: "Ayesha M.",
+                rating: 4,
+                comment: "Great service and beautiful venue. Minor delay in setup but overall excellent experience.",
+                date: "2 weeks ago",
+                eventType: "Engagement",
+                verified: true,
+                helpful: 5
+              }
+            ].map((review, index) => (
+              <div key={index} className="p-4 bg-pearl/30 rounded-lg">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-semibold text-sm">{review.customerName}</span>
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
+                      ))}
+                    </div>
+                    {review.verified && (
+                      <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs px-1 py-0">
+                        Verified
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-xs text-muted-foreground">{review.date}</span>
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">{review.comment}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-muted-foreground">{review.helpful} found helpful</span>
+                  {!review.vendorResponse && (
+                    <Button variant="outline" size="sm" className="text-xs px-2 py-1 h-6">
+                      <MessageSquare className="h-2 w-2 mr-1" />
+                      Respond
+                    </Button>
+                  )}
+                </div>
+                {review.vendorResponse && (
+                  <div className="mt-2 p-2 bg-rose-gold/5 rounded border-l-2 border-rose-gold">
+                    <p className="text-xs text-foreground">{review.vendorResponse}</p>
+                    <span className="text-xs text-muted-foreground">{review.responseDate}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+                  </div>
+                  <Button variant="outline" className="w-full mt-4 border-rose-gold/30 hover:border-rose-gold">
+                    View All Reviews
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Quick Actions */}
+              <Card className="border-rose-gold/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Settings className="h-5 w-5 text-rose-gold" />
+                    <span>Quick Actions</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <Button variant="outline" className="w-full justify-start border-rose-gold/30 hover:border-rose-gold">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Manage Availability
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start border-rose-gold/30 hover:border-rose-gold">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add New Service
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start border-rose-gold/30 hover:border-rose-gold">
+                      <Edit className="h-4 w-4 mr-2" />
+                      Update Pricing
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start border-rose-gold/30 hover:border-rose-gold">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      Respond to Reviews
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Service Categories */}
               <Card className="border-rose-gold/20">
@@ -337,6 +580,21 @@ const VendorDashboard = () => {
             </div>
           </TabsContent>
 
+          {/* Profile Tab */}
+          <TabsContent value="profile" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-foreground">Vendor Profile</h2>
+            </div>
+            
+            <VendorProfile 
+              vendorData={profileData}
+              isOwner={true}
+              onProfileUpdate={(updates) => {
+                setProfileData(prev => ({ ...prev, ...updates }));
+              }}
+            />
+          </TabsContent>
+
           {/* Services Tab */}
           <TabsContent value="services" className="space-y-6">
             <div className="flex justify-between items-center">
@@ -383,6 +641,28 @@ const VendorDashboard = () => {
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          {/* Availability Tab */}
+          <TabsContent value="availability" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-foreground">Manage Availability</h2>
+              <div className="flex space-x-2">
+                <Button variant="outline" className="border-rose-gold/30 hover:border-rose-gold">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Sync with Google Calendar
+                </Button>
+                <Button variant="outline" className="border-rose-gold/30 hover:border-rose-gold">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </Button>
+              </div>
+            </div>
+
+            <VendorAvailabilityCalendar 
+              vendorId="vendor_123"
+              isOwner={true}
+            />
           </TabsContent>
 
           {/* Bookings Tab */}

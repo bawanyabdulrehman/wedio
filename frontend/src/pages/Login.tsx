@@ -7,8 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useNavigate, Link } from "react-router-dom";
-import { signup, signin } from "@/services/auth";
-
 import { 
   Heart, 
   Mail, 
@@ -46,9 +44,9 @@ const Login = () => {
     toast.success("Welcome back! Redirecting to your dashboard...");
     setIsLoading(false);
     
-    // Redirect to home page after successful login
+    // Redirect to user dashboard after successful login
     setTimeout(() => {
-      navigate("/");
+      navigate("/user-dashboard");
     }, 1000);
   };
 
@@ -62,58 +60,16 @@ const Login = () => {
 
     setIsLoading(true);
 
-    try {
-    const response = await signup({
-      name: signupData.name,
-      email: signupData.email,
-      phone: signupData.phone,
-      password: signupData.password,
-      role: "CUSTOMER", // required by your backend
-    });
+    // Simulate signup process
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-    toast.success("Account created successfully!");
-    console.log("Signup success:", response);
-
-    navigate("/");
-  } catch (err: any) {
-    console.error("Signup error:", err);
-    toast.error(err.response?.data?.message || "Signup failed");
-  } finally {
+    toast.success("Account created successfully! Welcome to WedEase!");
     setIsLoading(false);
-  }
     
-    // Redirect to home page after successful signup
+    // Redirect to user dashboard after successful signup
     setTimeout(() => {
-      navigate("/");
+      navigate("/user-dashboard");
     }, 1000);
-  };
-
-  const handleSigninSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const response = await signin({
-        email: loginData.email,
-        password: loginData.password,
-      });
-
-      // Store tokens in localStorage
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      
-      // Show success message
-      toast.success("Signed in successfully!");
-      
-      // Redirect to home page
-      navigate("/");
-      
-    } catch (err: any) {
-      console.error("Signin error:", err);
-      toast.error(err.response?.data?.message || "Invalid email or password");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleLoginInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,7 +140,7 @@ const Login = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSigninSubmit} className="space-y-4">
+                <form onSubmit={handleLoginSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-foreground">Email</Label>
                     <div className="relative">
