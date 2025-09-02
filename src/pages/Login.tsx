@@ -44,9 +44,9 @@ const Login = () => {
     toast.success("Welcome back! Redirecting to your dashboard...");
     setIsLoading(false);
     
-    // Redirect to home page after successful login
+    // Redirect to user dashboard after successful login
     setTimeout(() => {
-      navigate("/");
+      navigate("/user-dashboard");
     }, 1000);
   };
 
@@ -63,12 +63,12 @@ const Login = () => {
     // Simulate signup process
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    toast.success("Account created successfully! Welcome to Aasaan Shaadi!");
+    toast.success("Account created successfully! Welcome to WedEase!");
     setIsLoading(false);
     
-    // Redirect to home page after successful signup
+    // Redirect to user dashboard after successful signup
     setTimeout(() => {
-      navigate("/");
+      navigate("/user-dashboard");
     }, 1000);
   };
 
