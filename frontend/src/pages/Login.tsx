@@ -17,6 +17,7 @@ import {
   EyeOff,
   ArrowLeft
 } from "lucide-react";
+import { signin, signup } from "@/services/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,16 +39,33 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login process
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await signin({
+        email: loginData.email,
+        password: loginData.password
+      });
 
-    toast.success("Welcome back! Redirecting to your dashboard...");
-    setIsLoading(false);
-    
-    // Redirect to user dashboard after successful login
-    setTimeout(() => {
-      navigate("/user-dashboard");
-    }, 1000);
+      // Store tokens in localStorage
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      
+      // Store user info if needed
+      localStorage.setItem('user', JSON.stringify(response.user));
+
+      toast.success("Welcome back! Redirecting to your dashboard...");
+
+      // Redirect based on user role
+      if (response.user.role === 'VENDOR') {
+        navigate("/vendor-dashboard");
+      } else {
+        navigate("/user-dashboard");
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || "Failed to sign in");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
@@ -60,16 +78,38 @@ const Login = () => {
 
     setIsLoading(true);
 
-    // Simulate signup process
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await signup({
+        name: signupData.name,
+        email: signupData.email,
+        phone: signupData.phone,
+        password: signupData.password,
+        role: "CUSTOMER" // Default role for regular users
+      });
 
-    toast.success("Account created successfully! Welcome to WedEase!");
-    setIsLoading(false);
-    
-    // Redirect to user dashboard after successful signup
-    setTimeout(() => {
-      navigate("/user-dashboard");
-    }, 1000);
+      // If signup is successful, automatically sign them in
+      const loginResponse = await signin({
+        email: signupData.email,
+        password: signupData.password
+      });
+
+      // Store tokens in localStorage
+      localStorage.setItem('accessToken', loginResponse.accessToken);
+      localStorage.setItem('refreshToken', loginResponse.refreshToken);
+      localStorage.setItem('user', JSON.stringify(loginResponse.user));
+
+      toast.success("Account created successfully! Welcome to Aasaan Shaadi!");
+
+      // Redirect to user dashboard
+      setTimeout(() => {
+        navigate("/user-dashboard");
+      }, 1000);
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      toast.error(error.response?.data?.message || "Failed to create account");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLoginInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

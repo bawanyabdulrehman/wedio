@@ -26,6 +26,7 @@ import {
   Plus,
   DollarSign
 } from "lucide-react";
+import { vendorSignup } from "@/services/auth"; // Add this import
 
 const VendorSignup = () => {
   const navigate = useNavigate();
@@ -196,18 +197,65 @@ const VendorSignup = () => {
       return;
     }
 
+    if (formData.serviceCategories.length === 0) {
+      toast.error("Please select at least one service category");
+      return;
+    }
+
     setIsLoading(true);
 
-    // Simulate vendor registration process
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Map frontend categories to backend enum values
+      const categoryMapping: { [key: string]: "HALL" | "CATERING" | "CAR_RENTAL" | "BEAUTY" | "OTHER" } = {
+        "venues": "HALL",
+        "catering": "CATERING",
+        "photography": "OTHER",
+        "makeup": "BEAUTY",
+        "wardrobe": "OTHER",
+        "henna": "BEAUTY",
+        "decoration": "OTHER",
+        "music": "OTHER"
+      };
 
-    toast.success("Vendor account created successfully! Welcome to Aasaan Shaadi!");
-    setIsLoading(false);
-    
-    // Redirect to vendor dashboard after successful registration
-    setTimeout(() => {
-      navigate("/vendor-dashboard");
-    }, 1000);
+      // Get the first selected category and map it to backend enum
+      const primaryCategory = categoryMapping[formData.serviceCategories[0]];
+
+      // Create the vendor signup payload
+      const vendorData = {
+        email: formData.email,
+        name: formData.ownerName,
+        password: formData.password,
+        phone: formData.phone,
+        role: "VENDOR" as const,
+        businessName: formData.businessName,
+        vendorCategory: primaryCategory,
+        city: formData.city,
+        area: formData.address.split(',')[0].trim(), // Using first part of address as area
+        address: formData.address,
+        description: formData.serviceDetails.description || `${formData.businessName} - Professional ${primaryCategory.toLowerCase()} services`,
+        logoUrl: formData.portfolio.previewUrls[0] || "" // Using first portfolio image as logo
+      };
+
+      const response = await vendorSignup(vendorData);
+
+      // Store authentication tokens
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+
+      toast.success("Vendor account created successfully! Welcome to Aasaan Shaadi!");
+      
+      // Redirect to vendor dashboard
+      setTimeout(() => {
+        navigate("/vendor-dashboard");
+      }, 1500);
+    } catch (error: any) {
+      console.error("Vendor signup error:", error);
+      const errorMessage = error.response?.data?.message || 
+                          "Failed to create vendor account. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Step 1: Choose Category

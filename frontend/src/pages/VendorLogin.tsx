@@ -14,6 +14,7 @@ import {
   EyeOff,
   ArrowLeft
 } from "lucide-react";
+import { signin } from "@/services/auth";
 
 const VendorLogin = () => {
   const navigate = useNavigate();
@@ -28,16 +29,44 @@ const VendorLogin = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate vendor login process
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await signin({
+        email: loginData.email,
+        password: loginData.password
+      });
 
-    toast.success("Welcome to your vendor dashboard!");
-    setIsLoading(false);
-    
-    // Redirect to vendor dashboard after successful login
-    setTimeout(() => {
-      navigate("/vendor-dashboard");
-    }, 1000);
+      // Store tokens from the response
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+
+      // Decode the JWT token to get user info
+      const decodedToken = JSON.parse(atob(response.accessToken.split('.')[1]));
+      
+      // Check if the user is a vendor
+      if (decodedToken.role !== 'VENDOR') {
+        toast.error("This account is not registered as a vendor");
+        return;
+      }
+
+      // Store user info from decoded token
+      localStorage.setItem('user', JSON.stringify({
+        id: decodedToken.id,
+        email: decodedToken.email,
+        role: decodedToken.role
+      }));
+
+      toast.success("Welcome back! Redirecting to your dashboard...");
+      
+      // Redirect to vendor dashboard
+      setTimeout(() => {
+        navigate("/vendor-dashboard");
+      }, 1000);
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || "Invalid credentials");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
