@@ -145,7 +145,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="mt-12 pt-8 border-t border-rose-gold/20 text-center">
           <p className="text-muted-foreground">
-            © 2024 Aasaan Shaadi. All rights reserved. Making weddings stress-free and memorable.
+            © 2024 WedEase . All rights reserved. Making weddings stress-free and memorable.
           </p>
         </div>
       </div>

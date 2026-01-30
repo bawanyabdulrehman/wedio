@@ -184,7 +184,7 @@ const About = () => {
               Our Core Values
             </h2>
             <p className="text-xl text-muted-foreground">
-              The principles that guide everything we do at Aasaan Shaadi
+              The principles that guide everything we do at WedEase
             </p>
           </div>
 
@@ -212,7 +212,7 @@ const About = () => {
               Meet Our Team
             </h2>
             <p className="text-xl text-muted-foreground">
-              The passionate people behind Aasaan Shaadi, dedicated to making your wedding dreams come true
+              The passionate people behind WedEase, dedicated to making your wedding dreams come true
             </p>
           </div>
 
@@ -239,7 +239,7 @@ const About = () => {
             Ready to Begin Your Journey?
           </h2>
           <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
-            Join the Aasaan Shaadi family and let us help you create the wedding of your dreams. 
+            Join the WedEase family and let us help you create the wedding of your dreams. 
             Your perfect day is just a click away.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

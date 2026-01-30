@@ -150,7 +150,7 @@ const Home = () => {
             </h1>
             
             <p className="text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              At Aasaan Shaadi, we bring every wedding need under one roof — making your special day stress-free, stylish, and truly memorable.
+              At WedEase, we bring every wedding need under one roof — making your special day stress-free, stylish, and truly memorable.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">

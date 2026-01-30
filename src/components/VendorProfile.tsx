@@ -531,7 +531,7 @@ const VendorProfile = ({ vendorData, isOwner = false, onProfileUpdate }: VendorP
                     <h4 className="font-semibold text-foreground">Business Verification</h4>
                     <p className="text-sm text-muted-foreground">
                       {vendorData.verificationStatus === 'verified' 
-                        ? "Business verified by Aasaan Shaadi" 
+                        ? "Business verified by WedEase" 
                         : "Verification in progress"
                       }
                     </p>
