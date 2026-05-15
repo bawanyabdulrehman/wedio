@@ -160,7 +160,7 @@ const Services = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-6">
-              Why Choose Aasaan Shaadi?
+              Why Choose WedEase?
             </h2>
             <p className="text-xl text-muted-foreground">
               We're not just a service provider — we're your wedding partners, dedicated to making your special day perfect.

@@ -265,7 +265,7 @@ const Contact = () => {
               <div className="text-center space-y-4">
                 <MapPin className="h-16 w-16 text-rose-gold mx-auto" />
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">Aasaan Shaadi Office</h3>
+                  <h3 className="text-xl font-bold text-foreground">WedEase Office</h3>
                   <p className="text-muted-foreground">Clifton Block 2, Karachi</p>
                   <p className="text-sm text-muted-foreground mt-2">
                     Interactive map coming soon

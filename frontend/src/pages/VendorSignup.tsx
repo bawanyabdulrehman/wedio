@@ -201,7 +201,7 @@ const VendorSignup = () => {
     // Simulate vendor registration process
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    toast.success("Vendor account created successfully! Welcome to Aasaan Shaadi!");
+    toast.success("Vendor account created successfully! Welcome to WedEase!");
     setIsLoading(false);
     
     // Redirect to vendor dashboard after successful registration
@@ -624,7 +624,7 @@ const VendorSignup = () => {
               <Heart className="h-6 w-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-rose-gold to-rose-gold-dark bg-clip-text text-transparent">
-              Aasaan Shaadi
+              WedEase
             </span>
           </Link>
           <div className="mt-4 flex items-center justify-center space-x-2">

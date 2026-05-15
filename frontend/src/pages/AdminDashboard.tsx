@@ -278,7 +278,7 @@ const AdminDashboard = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
-                <p className="text-sm text-muted-foreground">Aasaan Shaadi Platform</p>
+                <p className="text-sm text-muted-foreground">WedEase Platform</p>
               </div>
             </div>
             

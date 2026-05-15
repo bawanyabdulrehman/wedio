@@ -72,7 +72,7 @@ const VendorLogin = () => {
               <Heart className="h-6 w-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-rose-gold to-rose-gold-dark bg-clip-text text-transparent">
-              Aasaan Shaadi
+              WedEase
             </span>
           </Link>
           <div className="mt-4 flex items-center justify-center space-x-2">
